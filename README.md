@@ -1,3 +1,3 @@
 # better-project-name
 
-server currently at patverga.no-up.biz:80
+server currently at patverga.no-ip.biz:80
