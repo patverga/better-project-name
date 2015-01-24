@@ -30,5 +30,7 @@ def get_user_data(user):
     conn.close()
     return result
 
-insert_row("daniel johanisburg", "facebuke", "twter", "these are all the words i typed ever")
-print get_user_data("daniel johanisburg")
+
+def test():
+    insert_row("daniel johanisburg", "facebuke", "twter", "these are all the words i typed ever")
+    print get_user_data("daniel johanisburg")
