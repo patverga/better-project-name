@@ -1,5 +1,6 @@
 from urlparse import parse_qs
 from cgi import escape
+import database as db
 
 
 def application(environ, start_response):
@@ -14,5 +15,7 @@ def application(environ, start_response):
 
     response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(response)))]
     start_response(status, response_headers)
+
+    db.insert_row(user=name, inputs='ANALNUS')
 
     return [response]
