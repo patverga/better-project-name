@@ -1,10 +1,10 @@
 __author__ = 'jatwood'
 
-class Lexicon:
+class Corpus:
     '''
-    A Lexicon represents everything a user has written.
+    A Corpus represents a collection of text.
 
-    The Lexicon manages the storage and processing of text from different sources,
+    The Corpus manages the storage and processing of text from different sources,
     and also provides iterators over processed text.
     '''
 
