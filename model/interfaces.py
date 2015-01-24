@@ -22,6 +22,9 @@ class Source:
     def __init__(self):
         pass
 
+    def __iter__(self):
+        pass
+
 
 class SourceProcessor:
     '''
@@ -43,7 +46,11 @@ class Processor:
     def __init__(self):
         pass
 
-    def process(self, text):
+    def __apply__(self, *args):
+        if len(args) == 1:
+            self.process(args)
+
+    def process(self):
         pass
 
 class Pipeline:
@@ -53,6 +60,17 @@ class Pipeline:
 
     def __init__(self,processors):
         self.processors = processors
+
+
+class Model:
+    '''
+    A Model learns from a Corpus to produce new text.
+    '''
+
+    def __init__(self, corpus):
+        self.corpus = corpus
+
+
 
 
 
