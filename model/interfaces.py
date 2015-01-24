@@ -8,22 +8,19 @@ class Corpus:
     and also provides iterators over processed text.
     '''
 
-    def __init__(self, sources=[]):
-        self.sources = sources
-
     def __iter__(self):
-        pass
+        raise NotImplementedError
 
 class Source:
     '''
     A Source provides an interface to a particular text source while managing storage.
     '''
 
-    def __init__(self):
-        pass
-
     def __iter__(self):
-        pass
+        raise NotImplementedError
+
+    def update(self):
+        raise NotImplementedError
 
 
 class SourceProcessor:
@@ -31,27 +28,20 @@ class SourceProcessor:
     A SourceProcessor manages the storage and computation of a text transformation on a particular Source.
     '''
 
-    def __init__(self):
-        pass
-
     def process(self):
-        pass
+        raise NotImplementedError
 
 
 class Processor:
     '''
     A Processor computes a text transformation.
     '''
-
-    def __init__(self):
-        pass
-
     def __apply__(self, *args):
         if len(args) == 1:
             self.process(args)
 
     def process(self):
-        pass
+        raise NotImplementedError
 
 class Pipeline:
     '''
@@ -59,7 +49,7 @@ class Pipeline:
     '''
 
     def __init__(self,processors):
-        self.processors = processors
+        raise NotImplementedError
 
 
 class Model:
@@ -67,8 +57,12 @@ class Model:
     A Model learns from a Corpus to produce new text.
     '''
 
-    def __init__(self, corpus):
-        self.corpus = corpus
+    def learn(self):
+        raise NotImplementedError
+
+    def generate(self):
+        raise NotImplementedError
+
 
 
 
