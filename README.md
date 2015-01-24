@@ -1,7 +1,13 @@
 # better-project-name
 
-server currently at patverga.no-ip.biz:80
 
+Current Setup
+----
+- apache (accessible at patverga.no-ip.biz:80)
+- postgres db
+- bootstrap
+- [log in to facebook](server/htdocs/facebook.html)
+- [handle http requests and insert to db](server/python/request_handler.py)
 
 To Do
 ----
