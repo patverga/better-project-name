@@ -3,17 +3,19 @@
 
 Current Setup
 ----
-- apache (accessible at patverga.no-ip.biz:80)
-- <strike>postgres db</strike> mongodb
+- apache + mod_wsgi
+- mongodb + pymongo
 - bootstrap
-- [log in to facebook](server/htdocs/facebook.html)
-- [handle http requests and insert to db](server/python/request_handler.py)
+
+Dependencies and such
+----
+- pip install facebook-sdk
 
 To Do
 ----
-- switch db from postgres -> mongo
-- convert facebook tokens to long tokens and save in db
+- convert facebook tokens to long tokens
+- get more facebook data
 - connect other services 
-- make text generation thing
+- make better generation thing
 - ???
 - profit
