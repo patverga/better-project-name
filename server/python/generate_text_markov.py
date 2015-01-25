@@ -69,11 +69,13 @@ def application(environ, start_response):
     # generate dictionary
     text = '\n'.join(posts)
     dictionary = build_dict(text)
-    sentence = generate_sentence(dictionary)
+    sentence = generate_sentence(dictionary).encode('utf-8')
     # sentence = ''
 
-    response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(sentence)))]
-    start_response('200 OK', response_headers)
+    start_response('200 OK', [
+        ('Content-Type', 'text/html; charset=utf-8'),
+        ('Content-Length', str(len(sentence)))
+    ])
 
     return [sentence]
 
