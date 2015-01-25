@@ -13,6 +13,9 @@
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 
+      <!--Fontawesome icons-->
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
 
@@ -84,6 +87,7 @@
           // The person is not logged into Facebook
           else {
               document.getElementById('fb-status').innerHTML = '<div class="alert alert-danger" role="alert">\nPlease log in to Facebook!\n</div>';
+              document.getElementById('fb-button').innerHTML = '<button type="button" onclick="fbLogin();" class="btn btn-lg btn-primary"><i class="fa fa-facebook-square fa-lg">&nbsp;&nbsp;&nbsp;log in';
           }
       }
 
@@ -102,6 +106,7 @@
               var fbAlert = '<div class="alert alert-info" role="alert">\n<strong>Well done!</strong> Thanks for logging in, ' + response.name + '!\n</div>';
 //              var fbAlert = '<div class="alert alert-info" role="alert">\n<strong>Well done!</strong> POOP!\n</div>';
               document.getElementById('fb-status').innerHTML = fbAlert ;
+              document.getElementById('fb-button').innerHTML = '<button type="button" onclick="fbLogout();" class="btn btn-lg btn-primary"><i class="fa fa-facebook-square fa-lg">&nbsp;&nbsp;&nbsp;log out';
               // save the access token to db
               sendHttpRequest("storeToken", "name=" + response.name + "&access_token=" + accessToken);
           });
@@ -120,6 +125,18 @@
           httpRequest.onreadystatechange = function () {
               alertContents(httpRequest);
           };
+      }
+
+      function fbLogin(){
+          FB.login(function(response) {
+                  statusChangeCallback(response);
+          });
+      }
+
+      function fbLogout(){
+          FB.logout(function(response) {
+              statusChangeCallback(response);
+          });
       }
 
       /***
@@ -150,7 +167,7 @@
 </script>
 
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -170,23 +187,37 @@
       </div>
     </nav>
 
-    <div class="container">
+  <div class="container">
+      <div class="row">
+          <div class="starter-template">
+              <h1>Bootstrap starter template</h1>
 
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+              <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text
+                  and a mostly barebones HTML document.</p>
+          </div>
       </div>
 
-        <fb:login-button scope="public_profile,email,read_stream" autologoutlink = 'true' onlogin="checkLoginState();">
-        </fb:login-button>
+      <div class="row">
+          <!--<div class="col-sm-3 col-md-2">-->
+              <!--<fb:login-button scope="public_profile,email,read_stream" autologoutlink='true'-->
+                               <!--onlogin="checkLoginState();"></fb:login-button>-->
+          <!--</div>-->
+          <div id="fb-button" class="col-sm-3 col-md-2">
+              <button type="button" onclick="fbLogin();" class="btn btn-lg btn-primary"><i class="fa fa-facebook-square fa-lg"></i>&nbsp;&nbsp;&nbsp;log in</button>
+          </div>
+          <div class="col-sm-3 col-md-2">
+              <button type="button" onclick="generateText();" class="btn btn-lg btn-warning"><i class="fa fa-cogs fa-lg"></i>&nbsp;&nbsp;&nbsp;generate status</button>
+          </div>
+      </div>
 
-        <button type="button" onclick="generateText()" class="btn btn-lg btn-primary">generate Text</button>
+      <div class="row">
+          <p><div id="text-status"></div></p>
 
-        <div id="text-status"></div>
+          <p><div id="fb-status"></div></p>
+      </div>
+  </div>
 
-        <div id="fb-status"></div>
-
-    </div><!-- /.container -->
+  </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
