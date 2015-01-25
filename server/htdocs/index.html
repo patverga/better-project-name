@@ -29,23 +29,123 @@
 
   <body>
   <script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '389530634552084',
-      xfbml      : true,
-      version    : 'v2.2'
-    });
-  };
+      /**
+       * Set up all the facebook api stuff
+       */
+      window.fbAsyncInit = function() {
+          FB.init({
+              appId      : '389530634552084',
+              cookie     : true,  // enable cookies to allow the server to access
+              // the session
+              xfbml      : true,  // parse social plugins on this page
+              version    : 'v2.1' // use version 2.1
+          });
+
+          FB.getLoginStatus(function(response) {
+              statusChangeCallback(response);
+          });
+
+      };
+
+      // Load the SDK asynchronously
+      (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
 
 
+      /**
+       * called when someone finishes with Login Button.
+       */
+      function checkLoginState() {
+          FB.getLoginStatus(function(response) {
+              statusChangeCallback(response);
+          });
+      }
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+
+      /***
+       *  This is called with the results from from FB.getLoginStatus().
+       * @param response
+       */
+      function statusChangeCallback(response) {
+          console.log('statusChangeCallback');
+          console.log(response);
+          if (response.status === 'connected') {
+              fbConnectSuccess(response);
+          }
+          // The person is logged into Facebook, but not your app.
+          else if (response.status === 'not_authorized') {
+              document.getElementById('fb-status').innerHTML = '<div class="alert alert-danger" role="alert">\nPlease log in to this app!\n</div>';
+          }
+          // The person is not logged into Facebook
+          else {
+              document.getElementById('fb-status').innerHTML = '<div class="alert alert-danger" role="alert">\nPlease log in to Facebook!\n</div>';
+          }
+      }
+
+      /***
+       * Called when someone successfully logs in to the app
+       * @param response
+       */
+      function fbConnectSuccess(response) {
+          console.log('Welcome!  Fetching your information.... ');
+
+          // save the access token because the response gets overwritten
+          var accessToken = response.authResponse.accessToken;
+
+          FB.api('/me', function (response) {
+              console.log('Successful login for: ' + response.name);
+              var fbAlert = '<div class="alert alert-info" role="alert">\n<strong>Well done!</strong> Thanks for logging in, ' + response.name + '!\n</div>';
+//              var fbAlert = '<div class="alert alert-info" role="alert">\n<strong>Well done!</strong> POOP!\n</div>';
+              document.getElementById('fb-status').innerHTML = fbAlert ;
+              // save the access token to db
+              sendHttpRequest("storeToken", "name=" + response.name + "&access_token=" + accessToken);
+          });
+      }
+
+      /***
+       * Make http requests to the server
+       * @param url
+       * @param params
+       */
+      function sendHttpRequest(url, params) {
+          var httpRequest = new XMLHttpRequest();
+          var requestString = url+"?"+params;
+          httpRequest.open("GET", requestString, true);
+          httpRequest.send();
+          httpRequest.onreadystatechange = function () {
+              alertContents(httpRequest);
+          };
+      }
+
+      /***
+       * Handler for http request state change to show status
+       * @param httpRequest
+       */
+      function alertContents(httpRequest){
+          if (httpRequest.readyState == 4){
+              // everything is good, the response is received
+              if ((httpRequest.status == 200) || (httpRequest.status == 0)){
+                  // FIXME: perhaps a better example is to *replace* some text in the page.
+                  var htmlDoc=document.createElement('div'); // Create a new, empty DIV node.
+                  htmlDoc.innerHTML = httpRequest.responseText; // Place the returned HTML page inside the new node.
+                  alert( "The response was: " + httpRequest.status + httpRequest.responseText);
+              }else{
+                  alert('There was a problem with the request. ' + httpRequest.status + httpRequest.responseText);
+              }
+          }
+      }
+
+      function generateText(){
+          var pushedAlert = '<div class="alert alert-success" role="alert">\n<strong>Well done!</strong> You pushed the button!\n</div>';
+          sendHttpRequest("generateText", "name=Patrick%20Verga");
+          document.getElementById('text-status').innerHTML = pushedAlert;
+          console.log("Button pushed");
+      }
 
 </script>
 
@@ -64,7 +164,6 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="facebook.html">Facebook Stuff</a></li>
             <li><a href="http://www.lizardcam.net">Lizard Cam</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -78,12 +177,15 @@
         <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
       </div>
 
-        <div
-                class="fb-like"
-                data-send="true"
-                data-width="450"
-                data-show-faces="true">
-        </div>
+        <fb:login-button scope="public_profile,email,read_stream" autologoutlink = 'true' onlogin="checkLoginState();">
+        </fb:login-button>
+
+        <button type="button" onclick="generateText()" class="btn btn-lg btn-primary">generate Text</button>
+
+        <div id="text-status"></div>
+
+        <div id="fb-status"></div>
+
     </div><!-- /.container -->
 
 
