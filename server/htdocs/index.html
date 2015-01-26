@@ -59,6 +59,7 @@
           fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
 
+      var currentUser = '';
 
       /**
        * called when someone finishes with Login Button.
@@ -102,7 +103,9 @@
           var accessToken = response.authResponse.accessToken;
 
           FB.api('/me', function (response) {
+              currentUser = encodeURI(response.name.trim());
               console.log('Successful login for: ' + response.name);
+              
               var fbAlert = '<div class="alert alert-info" role="alert">\n<strong>Well done!</strong> Thanks for logging in, ' + response.name + '!\n</div>';
 //              var fbAlert = '<div class="alert alert-info" role="alert">\n<strong>Well done!</strong> POOP!\n</div>';
               document.getElementById('fb-status').innerHTML = fbAlert ;
@@ -121,6 +124,7 @@
           var httpRequest = new XMLHttpRequest();
           var requestString = url+"?"+params;
           httpRequest.open("GET", requestString, true);
+          httpRequest.overrideMimeType('text/plain; charset=utf-8');
           httpRequest.send();
           httpRequest.onreadystatechange = function () {
               alertContents(httpRequest);
@@ -150,16 +154,16 @@
                   // FIXME: perhaps a better example is to *replace* some text in the page.
                   var htmlDoc=document.createElement('div'); // Create a new, empty DIV node.
                   htmlDoc.innerHTML = httpRequest.responseText; // Place the returned HTML page inside the new node.
-                  alert( "The response was: " + httpRequest.status + httpRequest.responseText);
+                  alert( "The response was: " + httpRequest.status + ' ' + decodeURIComponent(httpRequest.responseText));
               }else{
-                  alert('There was a problem with the request. ' + httpRequest.status + httpRequest.responseText);
+                  alert('There was a problem with the request. ' + httpRequest.status + ' ' + httpRequest.responseText);
               }
           }
       }
 
       function generateText(){
           var pushedAlert = '<div class="alert alert-success" role="alert">\n<strong>Well done!</strong> You pushed the button!\n</div>';
-          sendHttpRequest("generateText", "name=Patrick%20Verga");
+          sendHttpRequest("generateText", "name="+currentUser);
           document.getElementById('text-status').innerHTML = pushedAlert;
           console.log("Button pushed");
       }
