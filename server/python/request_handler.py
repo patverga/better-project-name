@@ -13,7 +13,7 @@ def application(environ, start_response):
     user_name = escape(request_dict.get('name', [''])[0])
     access_token = escape(request_dict.get('access_token', [''])[0])
 
-    mongo.insert_access_token(user_name, access_token, 'facebook')
+    # mongo.insert_access_token(user_name, access_token, 'facebook')
 
     response = 'Success ' + user_name + "\n" #+ sent
 
