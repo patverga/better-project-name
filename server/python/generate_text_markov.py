@@ -69,14 +69,14 @@ def application(environ, start_response):
     access_token = mongo.get_access_token(user_name, 'facebook')
 
 
-# get posts from fb api
+    # get posts from fb api
     posts = fb_util.get_user_posts(access_token)
 
     # generate dictionary
     text = '\n'.join(posts)
     dictionary = build_dict(text)
-    # sentence = u'poop poop lots of poop butts butt butt'.encode('utf-8')
-    sentence = generate_sentence(dictionary).encode('utf-8')
+    sentence = u'poop poop lots of poop butts butt butt'.encode('utf-8')
+    # sentence = generate_sentence(dictionary).encode('utf-8')
     # sentence = ''
 
     start_response('200 OK', [
