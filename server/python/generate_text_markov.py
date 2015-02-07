@@ -74,9 +74,9 @@ def application(environ, start_response):
 
     # generate dictionary
     text = '\n'.join(posts)
-    dictionary = build_dict(text)
+    dictionary = build_dict(text.split())
     # sentence = u'poop poop lots of poop butts butt butt'.encode('utf-8')
-    sentence = str(generate_sentence(dictionary))#.encode('utf-8')
+    sentence = generate_sentence(dictionary)#.encode('utf-8')
     # sentence = ''.join([c for c in generate_sentence(dictionary)])
 
     start_response('200 OK', [
