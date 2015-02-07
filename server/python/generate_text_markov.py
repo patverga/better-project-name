@@ -44,21 +44,19 @@ def generate_sentence(d):
     li.append(first)
     li.append(second)
     
-    s = str(first) + ' ' + str(second)
     while True:
         try:
             third = choice(d[key])
         except KeyError:
             break
         li.append(third)
-        s += ' ' + str(third)
         if third[-1] in EOS:
             break
         # else
         key = (second, third)
         first, second = key
 
-    return s # str(' '.join(li)).encode('utf-8')
+    return str(' '.join(li)).encode('utf-8')
 
 
 def application(environ, start_response):
@@ -73,8 +71,7 @@ def application(environ, start_response):
     posts = fb_util.get_user_posts(access_token)
 
     # generate dictionary
-    text = '\n'.join(posts)
-    dictionary = build_dict(text.split())
+    dictionary = build_dict('\n'.join(posts).split())
     # sentence = u'poop poop lots of poop butts butt butt'.encode('utf-8')
     sentence = generate_sentence(dictionary)#.encode('utf-8')
     # sentence = ''.join([c for c in generate_sentence(dictionary)])
