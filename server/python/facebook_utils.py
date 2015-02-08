@@ -20,7 +20,8 @@ __author__ = 'pv'
 #     return posts
 
 
-## TODO get all pages of comments, make faster, maybe get the posts when they log in only and store?
+## TODO get all pages of comments, make faster, maybe get the posts when they log in only and store, maybe filter friends comments?
+## TODO filter out happy birthday messages because there are too many
 def get_user_posts(access_token):
     '''    
     :param access_token: User access token
