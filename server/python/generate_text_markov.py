@@ -63,12 +63,9 @@ def application(environ, start_response):
     # parse the http request
     request_dict = parse_qs(environ['QUERY_STRING'])
     user_name = escape(request_dict.get('name', [''])[0])
-    # access_token = mongo.get_access_token(user_name, 'facebook')
-    access_token = mongo.get_access_token(user_name, 'facebook')
-
 
     # get posts from fb api
-    posts = fb_util.get_user_posts(access_token)
+    posts = mongo.get_user_text(user_name, 'facebook')
 
     # generate dictionary
     dictionary = build_dict('\n'.join(posts).split())
