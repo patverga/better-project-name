@@ -60,7 +60,7 @@ def test():
     # insert_access_token('Patrick Verga', 'test', 'facebook')
     for r in table.find():
         print r
-    print get_user_text('Patrick Verga', 'facebook')
+    print '\n'.join(get_user_text('Emma Strubell', 'facebook'))
         # token = get_access_token('Patrick Verga', 'facebook')
         # print token
 

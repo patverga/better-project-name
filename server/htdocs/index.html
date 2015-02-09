@@ -154,7 +154,7 @@
                   // FIXME: perhaps a better example is to *replace* some text in the page.
                   var htmlDoc=document.createElement('div'); // Create a new, empty DIV node.
                   htmlDoc.innerHTML = httpRequest.responseText; // Place the returned HTML page inside the new node.
-                  alert( "The response was: " + httpRequest.status + ' ' + decodeURIComponent(httpRequest.responseText));
+                  alert(decodeURIComponent(httpRequest.responseText));
               }else{
                   alert('There was a problem with the request. ' + httpRequest.status + ' ' + httpRequest.responseText);
               }
